@@ -1,0 +1,31 @@
+<div class="w-full flex gap-4 group duration-300">
+<!--  <div class="w-[40%] flex justify-center items-center rounded-xl relative overflow-hidden border-transparent group-hover:shadow">-->
+<!--    <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1973&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" [alt]="product.title" class="w-full"/>-->
+<!--  </div>-->
+  <div class="w-[40%] h-[30vh] flex justify-center items-center rounded-xl relative overflow-hidden border-transparent group-hover:shadow">
+    <img [src]="product.image" [alt]="product.title" class="object-cover w-full h-full duration-300 group-hover:scale-125"/>
+  </div>
+  <div class="w-[60%] flex flex-col justify-end items-start bg-green-50 rounded-xl relative overflow-hidden p-4 gap-4 border-transparent group-hover:shadow group-hover:bg-black/5 duration-300">
+    <h1 class="text-2xl w-full">{{ product.title }}</h1>
+    <button
+      (click)="addToCart()"
+      class="text-sm py-3 px-6 font-bold text-black bg-black/5 rounded-lg absolute right-0 top-0 mt-4 mr-4">
+      {{ product.category }}
+    </button>
+    <h1 class="text-xl font-black w-full">{{ product.price | currency }}</h1>
+    <p class="w-full font-medium">{{ product.description }}</p>
+    <div class="w-full gap-4 flex justify-start items-center">
+      <button
+        (click)="decreaseQuantity()"
+        class="py-3 px-5 rounded-lg bg-red-900 font-bold text-white duration-75 hover:scale-105 active:scale-90 active:rounded-full">
+        -
+      </button>
+      <h1 class="px-3 text-lg font-medium">{{ quantity }}</h1>
+      <button
+        (click)="increaseQuantity()"
+        class="py-3 px-5 rounded-lg bg-green-900 font-bold text-white duration-75 hover:scale-105 active:scale-90 active:rounded-full">
+        +
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,48 +1,51 @@
-<div class="w-screen h-screen bg-green-100/50 flex flex-col justify-start items-center py-8">
+<div class="w-screen min-h-screen bg-green-100/50 flex flex-col justify-start items-center py-8">
   <div class="w-[95%] xl:container flex flex-col justify-start items-start gap-4">
-    <div class="flex w-full justify-between items-center">
-      <h1 class="text-xl font-black text-indigo-600">Tropical .</h1>
-      <button class="px-6 py-4 bg-black border-2 border-black text-green-100 rounded-xl font-bold shadow">9 Cart
-      </button>
+    <div class="w-full relative">
+      <div class="flex w-full justify-between items-center sticky top-0 py-4 bg-green-50 z-40">
+        <h1 class="text-xl font-black text-indigo-600">Tropical .</h1>
+        <button class="px-6 py-4 bg-black border-2 border-black text-green-100 rounded-xl font-bold shadow">
+          {{ (cartTotalQuantity$ | async) || 0 }} Items - Total: {{ (cartTotal$ | async) | currency: 'USD' }}
+        </button>
+      </div>
+
+      <div class="w-full p-4 bg-green-100 right-0 rounded-3xl" *ngIf="(cart$ | async)?.length">
+        <ul class="flex flex-col gap-4 w-full">
+          <li *ngFor="let product of (cart$ | async)" class="flex justify-between items-center p-8 bg-gray-200 rounded-2xl duration-200 hover:shadow hover:shadow-green-950">
+            <p class="w-[40%] font-semibold">{{ product.title }}</p>
+            <div class="flex items-center gap-4">
+              <!-- Quantity Controls -->
+              <div class="flex items-center gap-2">
+                <button (click)="decreaseQuantity(product.id)" class="px-4 py-2 text-sm bg-gray-400 text-white rounded-lg">-</button>
+                <p class="text-lg font-medium">{{ product.quantity || 1 }}</p>
+                <button (click)="increaseQuantity(product.id)" class="px-4 py-2 text-sm bg-gray-400 text-white rounded-lg">+</button>
+              </div>
+              <!-- Product Price -->
+              <p class="text-lg font-medium">{{ product.price | currency: 'USD' }}</p>
+              <!-- Remove Button -->
+              <button (click)="removeFromCart(product.id)" class="ml-4 px-4 py-2 text-sm bg-red-600 text-white rounded-lg">Remove</button>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <div class="w-full flex gap-4 justify-start items-start">
-      <ul class="w-[23%] pr-2 flex flex-col gap-4">
+      <ul class="w-[23%] pr-2 flex flex-col gap-4 sticky top-20">
         <li class="p-4 hover:bg-green-200 duration-200 cursor-pointer font-medium text-green-950 rounded-xl">Food</li>
-        <li class="p-4 hover:bg-green-200 duration-200 cursor-pointer font-medium text-green-950 rounded-xl">
-          Electronics
-        </li>
+        <li class="p-4 hover:bg-green-200 duration-200 cursor-pointer font-medium text-green-950 rounded-xl">Electronics</li>
         <li class="p-4 hover:bg-green-200 duration-200 cursor-pointer font-medium text-green-950 rounded-xl">Plant</li>
-        <li class="p-4 hover:bg-green-200 duration-200 cursor-pointer font-medium text-green-950 rounded-xl">Skin care
-        </li>
+        <li class="p-4 hover:bg-green-200 duration-200 cursor-pointer font-medium text-green-950 rounded-xl">Skin care</li>
       </ul>
-      <div class="w-[77%] p-4 bg-white rounded-xl shadow flex flex-col gap-4">
+      <div class="w-[77%] p-4 rounded-xl shadow flex flex-col gap-4">
         <h1 class="text-lg font-black">All Products</h1>
-        <div class="w-full grid grid-cols-1">
-          <div class="w-full flex gap-4">
-            <div
-              class="w-[40%] flex justify-center items-center rounded-xl border-4 border-green-100 relative overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1973&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="plant" class="w-full"/>
-            </div>
-            <div
-              class="w-[60%] flex flex-col justify-end items-start rounded-xl border-4 border-green-100 relative overflow-hidden p-4 gap-4">
-              <h1 class="text-2xl w-full">Tropical Plant</h1>
-              <button class="text-sm py-3 px-6 font-bold text-white bg-black rounded-lg absolute right-0 top-0 mt-4 mr-4">Plant 1</button>
-              <h1 class="text-xl font-black w-full">3000 rwf</h1>
-              <p class="w-full font-medium">M2 brings incredible performance and capability so you can blaze through
-                everyday activities, multitask across apps, pursue your creative passions, and play your favorite
-                games
-              </p>
-              <div class="w-full gap-4 flex justify-start items-center">
-                <button class="py-3 px-5 rounded-lg bg-red-900 font-bold text-white">-</button>
-                <h1 class="px-3 text-lg font-medium">0</h1>
-                <button class="py-3 px-5 rounded-lg bg-green-900 font-bold text-white">+</button>
-              </div>
-            </div>
+        <div class="w-full flex gap-4">
+          <div class="w-full flex flex-col gap-8" *ngIf="(products$ | async) as products; else noItems">
+            <app-card *ngFor="let product of products" [product]="product"></app-card>
           </div>
         </div>
+        <ng-template #noItems>
+          <p>Loading...</p>
+        </ng-template>
       </div>
     </div>
   </div>
